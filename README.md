@@ -11,3 +11,7 @@ Changes
 
 fortune.js - function to return a random quote from an array - to show dynamic html creation
 handlers.js - handles routing to pages
+
+## views
+
+main.handlebars - added links to bootstrap to improve appearance of the pages

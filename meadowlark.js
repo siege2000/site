@@ -23,4 +23,10 @@ app.get("/about", handlers.about);
 //404 and 500 pages
 app.use(handlers.notFound);
 app.use(handlers.serverError);
-app.listen(port, () => console.log(`Express started on /localhost:$(port)`));
+
+//changed this code = not sure exact reason but it may have something to do with testing
+if (require.main === module) {
+  app.listen(port, () => console.log(`Express started on /localhost:${port}`));
+} else {
+  module.exports = app;
+}
