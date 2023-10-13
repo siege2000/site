@@ -1,6 +1,7 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars").engine;
 const fortune = require("./lib/fortune");
+const handlers = require("./lib/handlers");
 
 const app = express();
 //configure handlebars view engine
@@ -15,22 +16,11 @@ app.use(express.static(__dirname + "/public"));
 
 const port = process.env.PORT || 3000;
 
-//custom 404 page
+//send requests to handlers. (./lib/handlers.js file now does routing)
+app.get("/", handlers.home);
+app.get("/about", handlers.about);
 
-app.get("/", (req, res) => res.render("home"));
-app.get("/about", (req, res) =>
-  res.render("about", { fortune: fortune.getFortune() })
-);
-app.use((req, res) => {
-  res.status(404);
-  res.render("404");
-});
-
-//custom 500 page
-app.use((req, res) => {
-  res.type("text/plain");
-  res.status(500);
-  res.send("500 - Danger Will Robinson - Internal Server Error");
-});
-
+//404 and 500 pages
+app.use(handlers.notFound);
+app.use(handlers.serverError);
 app.listen(port, () => console.log(`Express started on /localhost:$(port)`));
