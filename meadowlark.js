@@ -1,5 +1,6 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars").engine;
+const fortune = require("./lib/fortune");
 
 const app = express();
 //configure handlebars view engine
@@ -10,13 +11,16 @@ app.engine(
   })
 );
 app.set("view engine", "handlebars");
+app.use(express.static(__dirname + "/public"));
 
 const port = process.env.PORT || 3000;
 
 //custom 404 page
 
 app.get("/", (req, res) => res.render("home"));
-app.get("/about", (req, res) => res.render("about"));
+app.get("/about", (req, res) =>
+  res.render("about", { fortune: fortune.getFortune() })
+);
 app.use((req, res) => {
   res.status(404);
   res.render("404");
