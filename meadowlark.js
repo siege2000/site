@@ -1,21 +1,25 @@
 const express = require("express");
+const expressHandlebars = require("express-handlebars").engine;
+
 const app = express();
+//configure handlebars view engine
+app.engine(
+  "handlebars",
+  expressHandlebars({
+    defaultLayout: "main",
+  })
+);
+app.set("view engine", "handlebars");
+
 const port = process.env.PORT || 3000;
 
 //custom 404 page
 
-app.get("/", (req, res) => {
-  res.type("text/plain");
-  res.send("Meadowlark Travel");
-});
-app.get("/about", (req, res) => {
-  res.type("text/plain");
-  res.send("This will be the About Page. Someday...maybe");
-});
+app.get("/", (req, res) => res.render("home"));
+app.get("/about", (req, res) => res.render("about"));
 app.use((req, res) => {
-  res.type("text/plain");
   res.status(404);
-  res.send("404 - We've looked, Page not found");
+  res.render("404");
 });
 
 //custom 500 page
